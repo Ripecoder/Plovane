@@ -7,7 +7,7 @@ name = "plovane"
 version = "0.1.0"
 description = "Plovane recommendation models: retrieval embedding model and three-stage ranking stack"
 requires-python = ">=3.11"
-dependencies = ["numpy>=1.26"]
+dependencies = ["numpy>=1.26", "flask>=3.0"]
 
 [project.optional-dependencies]
 # Stage 1 and Stage 3 fall back to a hand-weighted linear score without this.
@@ -20,4 +20,11 @@ dev = ["pytest>=8.0"]
 include = ["ml*", "backend*"]
 
 [tool.pytest.ini_options]
-testpaths = ["ml/tests", "backend/mcp_server/tests", "backend/whiteboard/tests"]
+testpaths = [
+    "ml/tests",
+    "backend/mcp_server/tests",
+    "backend/whiteboard/tests",
+    "backend/local_backend/tests",
+    "backend/cloud_server/tests",
+    "backend/validator/tests",
+]

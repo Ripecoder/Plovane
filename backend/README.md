@@ -8,16 +8,17 @@ backend/
 ├── README.md          this file
 ├── mcp_server/        B04 MCP interface: models and whiteboard as tools for AI agents      BUILT
 ├── whiteboard/        whiteboard backend: board, slash commands, local API, agent tools   BUILT
-├── local_backend/     B03 local Python backend: the app's API on 127.0.0.1              skeleton
-├── cloud_server/      B05 rate limiter + auth, B07 verified-library access (Flask)       skeleton
+├── local_backend/     B03 local Python backend: the app's API on 127.0.0.1              BUILT (recommendation path)
+├── cloud_server/      B05 rate limiter + B07 verified-library access (Flask)             B05 BUILT, no auth yet
+├── validator/         B11 deterministic diagram validator (library, transport open)      BUILT
 ├── library_db/        B08 permanent verified library database                           skeleton
 └── credits/           B16 contribution and credits backend                              skeleton
 ```
 
 **Built** folders have working, tested code. **Skeleton** folders hold only
 a README: what the block does, the handbook contracts it must follow, what it
-connects to, and which gaps are still open. Nirmal owns all four skeleton
-blocks (handbook §2.2).
+connects to, and which gaps are still open. Nirmal owns the blocks marked
+above (handbook §2.2).
 
 ## How the pieces connect
 
@@ -41,5 +42,10 @@ cloud_server (B05 rate limiter + auth) ──► ml/serving/service (B06 recomme
 ```sh
 python -m backend.whiteboard.server --project /path/to/project   # whiteboard API, 127.0.0.1:8700
 python -m ml.serving.service.app                                 # recommender API, 127.0.0.1:8600
+python -m backend.cloud_server.app                               # B05, 127.0.0.1:8500
+python -m backend.local_backend.app                              # B03, 127.0.0.1:8701
 claude mcp add plovane -- python -m backend.mcp_server           # tools for Claude Code
 ```
+
+The local app talks to the cloud, so the recommendation path is: desktop/CLI
+→ `local_backend:8701` → `cloud_server:8500` → `ml/serving:8600`.
